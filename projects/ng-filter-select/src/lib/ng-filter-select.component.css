@@ -16,5 +16,5 @@ input, select {
             box-sizing: border-box;
 }
 
-  select:focus, input:focus { outline: none}
+select:focus, input:focus { outline: none}
 
