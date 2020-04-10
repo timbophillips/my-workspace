@@ -1,0 +1,22 @@
+/* input { margin-bottom: 5px; font-size: 3;} */
+
+.box {
+  width: 100%;
+}
+
+.dropdown {
+  z-index:0; position: absolute;
+  width: 97%;
+  margin-left: 2px;
+}
+
+input, select {
+  font-size: 3;
+  width: 100%;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+
+  select:focus, input:focus { outline: none}
+

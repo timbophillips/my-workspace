@@ -1,0 +1,12 @@
+<div class="component" >
+	<div class="box">
+		<input #filterInput (keyup)="changeFilter(filterInput.value)" (focus)="changeFilter('')" (keyup.enter)="selectOption()" (keyup.arrowdown)="focusSelectBox()" >
+  </div>
+	<div class="dropdown">
+
+			<select [hidden]="true" #selectBox size=10 (click)="selectOption()" (keyup.enter)="selectOption()" (blur)="selectOption()">
+
+        <option *ngFor = "let option of filteredOptions | async" [value]="option.id" [selected]="option.selected">{{ option.text}}</option>
+      </select>
+	</div>
+</div>
