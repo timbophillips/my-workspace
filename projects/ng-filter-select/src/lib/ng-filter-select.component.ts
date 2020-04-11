@@ -7,7 +7,9 @@ import {
   Output,
   EventEmitter,
   ChangeDetectionStrategy,
-  AfterViewInit
+  AfterViewInit,
+  HostBinding,
+  HostListener
 } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { filter, first, map } from 'rxjs/operators';
@@ -24,6 +26,7 @@ export type option = { text: string; id: string; selected?: boolean };
 export class NgFilterSelectComponent implements OnInit, AfterViewInit {
   @ViewChild('filterInput') filterInputElementRef: ElementRef;
   @ViewChild('selectBox') selectBoxElementRef: ElementRef;
+  @ViewChild('dropdown') dropDownDivElementRef: ElementRef;
 
   @Input() options: option[];
   // tslint:disable-next-line: no-output-native
@@ -33,6 +36,7 @@ export class NgFilterSelectComponent implements OnInit, AfterViewInit {
   allOptions: Observable<option[]>;
   selectBox: HTMLSelectElement;
   filterInput: HTMLInputElement;
+  dropDownDiv: HTMLDivElement;
 
   ngOnInit() {
     this.allOptions = of(this.options);
@@ -42,12 +46,13 @@ export class NgFilterSelectComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.selectBox = this.selectBoxElementRef.nativeElement;
     this.filterInput = this.filterInputElementRef.nativeElement;
+    this.dropDownDiv = this.dropDownDivElementRef.nativeElement;
   }
 
   changeFilter(value: string) {
-        this.selectBox.hidden = false;
+    this.dropDownDiv.hidden = false;
 
-        this.filteredOptions = this.allOptions.pipe(
+    this.filteredOptions = this.allOptions.pipe(
       map(x => {
         const z: option[] = x
           .filter(
@@ -57,24 +62,41 @@ export class NgFilterSelectComponent implements OnInit, AfterViewInit {
             t.selected = false;
             return t;
           });
-        z[0].selected = true;
+        if (value !== '') {
+          z[0].selected = true;
+        }
         return z;
       })
     );
   }
 
   selectOption() {
-    this.filterInput.value = this.selectBox.options[
-      this.selectBox.selectedIndex
-    ].text;
-    this.result.emit({
-      text: this.selectBox.options[this.selectBox.selectedIndex].text,
-      id: this.selectBox.value
-    });
-    this.selectBox.hidden = true;
+    if (this.selectBox.selectedIndex > -1) {
+      this.filterInput.value = this.selectBox.options[
+        this.selectBox.selectedIndex
+      ].text;
+      this.result.emit({
+        text: this.selectBox.options[this.selectBox.selectedIndex].text,
+        id: this.selectBox.value
+      });
+    }
+    this.dropDownDiv.hidden = true;
   }
 
-  focusSelectBox() {
+  focusSelect() {
     this.selectBox.focus();
   }
+
+  blurInput(gotFocus: HTMLElement) {
+    if (gotFocus && (gotFocus.className === 'tp-select')) {
+      this.focusSelect();
+    } else {
+      this.selectOption();
+    }
+  }
+
+  blurSelect() {
+    this.selectOption();
+  }
+
 }

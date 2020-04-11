@@ -1,12 +1,31 @@
-<div class="component" >
-	<div class="box">
-		<input #filterInput (keyup)="changeFilter(filterInput.value)" (focus)="changeFilter('')" (keyup.enter)="selectOption()" (keyup.arrowdown)="focusSelectBox()" >
+<div class="component">
+  <div class="box">
+    <input
+      type="text"
+      #filterInput
+      (blur)="blurInput($event.relatedTarget)"
+      (keyup)="changeFilter(filterInput.value)"
+      (focus)="changeFilter('')"
+      (keyup.enter)="selectOption()"
+      (keyup.arrowdown)="focusSelect()"
+    />
   </div>
-	<div class="dropdown">
-
-			<select [hidden]="true" #selectBox size=10 (click)="selectOption()" (keyup.enter)="selectOption()" (blur)="selectOption()">
-
-        <option *ngFor = "let option of filteredOptions | async" [value]="option.id" [selected]="option.selected">{{ option.text}}</option>
-      </select>
-	</div>
+  <div class="dropdown" #dropdown [hidden]="true">
+    <select
+      size="5"
+      #selectBox
+      (click)="selectOption()"
+      class="tp-select"
+      tag="tp"
+      (keyup.enter)="selectOption()"
+      (blur)="blurSelect()"
+    >
+      <option
+        *ngFor="let option of filteredOptions | async"
+        [value]="option.id"
+        [selected]="option.selected"
+        >{{ option.text }}</option
+      >
+    </select>
+  </div>
 </div>

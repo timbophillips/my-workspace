@@ -1,20 +1,21 @@
-.box {
-  width: 100%;
+
+input {
+  margin-bottom: 0;
+  /* width: 100%; */
 }
 
 .dropdown {
-  z-index:0; position: absolute;
-  width: 97%;
-  margin-left: 2px;
+  z-index: 0;
+  position: absolute;
+  width: 96%;
 }
 
-input, select {
-  font-size: 3;
-  width: 100%;
-    -webkit-box-sizing: border-box;
-       -moz-box-sizing: border-box;
-            box-sizing: border-box;
+input,
+select {
+  max-width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-select:focus, input:focus { outline: none}
-
+/* select:focus, input:focus { outline: none} */
